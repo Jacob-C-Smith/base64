@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "base64.h": "c",
+        "stddef.h": "c"
+    }
+}
