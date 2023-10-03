@@ -21,7 +21,7 @@ static const char base_64_characters[64] = {
                                       '4', '5', '6', '7', '8', '9', '+', '/'
                                     };
 
-int base64_encode ( const void *const p_data, size_t len, unsigned char *const p_output )
+int base64_encode ( const void *const p_data, size_t len, char *const p_output )
 {
 
     // Argument errors
@@ -50,6 +50,42 @@ int base64_encode ( const void *const p_data, size_t len, unsigned char *const p
     // Insert a null terminator in the correct position
     p_output[( 4 * ( ( len + 2 ) / 3 ) ) - remainders[len % 3]] = '\0';
     
+    // Success
+    return 1;
+
+    // Error handling
+    {
+
+        // Argument errors
+        {
+            no_data:
+                #ifndef NDEBUG
+                    printf("[base64] Null pointer provided for parameter \"p_data\" in call to function \"%s\"\n", __FUNCTION__);
+                #endif
+
+                // Error
+                return 0;
+
+            no_output:
+                #ifndef NDEBUG
+                    printf("[base64] Null pointer provided for parameter \"p_output\" in call to function \"%s\"\n", __FUNCTION__);
+                #endif
+
+                // Error
+                return 0;
+        }
+    }
+}
+
+int base64_decode ( const char *const p_data, size_t len, void *const p_output )
+{
+
+    // Argument errors
+    if ( p_data   == (void *) 0 ) goto no_data;
+    if ( p_output == (void *) 0 ) goto no_output;
+
+    (void) len;
+
     // Success
     return 1;
 
