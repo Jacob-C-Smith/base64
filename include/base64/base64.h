@@ -30,7 +30,7 @@
  * 
  * @return 1 on success, 0 on error
  */
-DLLEXPORT int base64_encode ( const void *const p_data, size_t len, unsigned char *const p_output );
+DLLEXPORT int base64_encode ( const void *const p_data, size_t len, char *const p_output );
 
 /** !
  * Decode len bytes of base 64 data, and store in p_output
