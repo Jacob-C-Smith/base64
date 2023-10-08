@@ -1,4 +1,4 @@
-name: base-64
+name: base 64
 
 on:
   push:
