@@ -1,7 +1,7 @@
 # base64
 [![base64](https://github.com/Jacob-C-Smith/base64/actions/workflows/cmake.yml/badge.svg)](https://github.com/Jacob-C-Smith/base64/actions/workflows/cmake.yml)
 
- Base 64 encoding and decoding
+ base64 encoding and decoding
 
  > 1 [Download](#download)
  >
