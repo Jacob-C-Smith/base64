@@ -30,6 +30,32 @@ if (${IS_DEBUG_BUILD})
     add_compile_definitions(NDEBUG)
 endif()
 
+# Find the sync module
+if ( NOT "${HAS_SYNC}")
+
+    # Log
+    message("[json] Adding sync project")
+
+    # Add the sync directory
+    add_subdirectory(${CMAKE_SOURCE_DIR}/extern/sync ${CMAKE_SOURCE_DIR}/build/sync)
+
+    # Let any parent project know that this project has sync
+    set(HAS_SYNC true PARENT_SCOPE)
+endif()
+
+# Find the log module
+if ( NOT "${HAS_LOG}")
+
+    # Log
+    message("[json] Adding log project")
+
+    # Add the log directory
+    add_subdirectory(${CMAKE_SOURCE_DIR}/extern/log ${CMAKE_SOURCE_DIR}/build/log)
+
+    # Let any parent project know that this project has log
+    set(HAS_LOG true PARENT_SCOPE)
+endif()
+
 # Add the base64 project
 if ( NOT "${HAS_BASE64}")
 
@@ -41,9 +67,19 @@ if ( NOT "${HAS_BASE64}")
 endif()
 
 # Add source to the executable
-add_executable(base64_example "base64.c" "main.c")
+add_executable(base64_example "main.c")
+add_dependencies(base64_example log sync base64)
 target_include_directories(base64_example PUBLIC include include/base64/)
+target_link_libraries(base64_example sync log base64)
+
+## Add source to the tester
+add_executable (base64_test "base64_test.c")
+add_dependencies(base64_test sync log base64)
+target_include_directories(base64_test PUBLIC include include/base64 )
+target_link_libraries(base64_test sync log base64)
 
 # Add source to the library
 add_library(base64 SHARED "base64.c")
+add_dependencies(base64 log sync base64)
 target_include_directories(base64 PUBLIC include include/base64/)
+target_link_libraries(base64 sync log)

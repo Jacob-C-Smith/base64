@@ -44,6 +44,7 @@ int base64_encode ( const void *const p_data, size_t len, char *const p_output )
 
     // Argument errors
     if ( p_data   == (void *) 0 ) goto no_data;
+    if ( len      ==          0 ) goto no_len;
     if ( p_output == (void *) 0 ) goto no_output;
 
     // Static constant data
@@ -67,6 +68,8 @@ int base64_encode ( const void *const p_data, size_t len, char *const p_output )
 
     // Insert a null terminator in the correct position
     p_output[( 4 * ( ( len + 2 ) / 3 ) ) - remainders[len % 3]] = '\0';
+    
+    no_len:
     
     // Success
     return 1;
@@ -100,6 +103,7 @@ int base64_decode ( const char *const p_data, size_t len, void *const p_output )
 
     // Argument errors
     if ( p_data   == (void *) 0 ) goto no_data;
+    if ( len      ==          0 ) goto no_len;
     if ( p_output == (void *) 0 ) goto no_output;
 
     // Iterate through len bytes of p_data
@@ -117,6 +121,8 @@ int base64_decode ( const char *const p_data, size_t len, void *const p_output )
         ((unsigned char *const)p_output)[j+1] = (part >> 1 * 8) & 0xFF;
         ((unsigned char *const)p_output)[j+2] = (part >> 0 * 8) & 0xFF;
     }
+
+    no_len:
 
     // Success
     return 1;
