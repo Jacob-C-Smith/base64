@@ -1,5 +1,5 @@
-﻿# Need CMake 3.20
-cmake_minimum_required (VERSION 3.20)
+﻿# Need CMake 3.28.0
+cmake_minimum_required (VERSION 3.28.0)
 
 # The name of the repository
 project ("base64")
@@ -33,27 +33,26 @@ endif()
 # Find the sync module
 if ( NOT "${HAS_SYNC}")
 
-    # Log
-    message("[json] Adding sync project")
-
     # Add the sync directory
     add_subdirectory(${CMAKE_SOURCE_DIR}/extern/sync ${CMAKE_SOURCE_DIR}/build/sync)
 
     # Let any parent project know that this project has sync
-    set(HAS_SYNC true PARENT_SCOPE)
+    if(NOT PROJECT_IS_TOP_LEVEL)
+        set(HAS_SYNC true PARENT_SCOPE)
+        set(SYNC_INCLUDE_DIR ${SYNC_INCLUDE_DIR} PARENT_SCOPE)
+    endif()
 endif()
-
 # Find the log module
 if ( NOT "${HAS_LOG}")
-
-    # Log
-    message("[json] Adding log project")
-
+    
     # Add the log directory
     add_subdirectory(${CMAKE_SOURCE_DIR}/extern/log ${CMAKE_SOURCE_DIR}/build/log)
 
     # Let any parent project know that this project has log
-    set(HAS_LOG true PARENT_SCOPE)
+    if(NOT PROJECT_IS_TOP_LEVEL)
+        set(HAS_LOG true PARENT_SCOPE)
+        set(LOG_INCLUDE_DIR ${LOG_INCLUDE_DIR} PARENT_SCOPE)
+    endif()
 endif()
 
 # Add the base64 project
@@ -61,25 +60,29 @@ if ( NOT "${HAS_BASE64}")
 
     # Log
     message("[base64] Adding base64 project")
+    
+    # Set the include directory
+    set(BASE64_INCLUDE_DIR ${CMAKE_CURRENT_LIST_DIR}/include)
 
     # Let any parent project know that it has the base64 project
-    set(HAS_BASE64 CACHE true PARENT_SCOPE)
+    if(NOT PROJECT_IS_TOP_LEVEL)
+        set(HAS_BASE64 true PARENT_SCOPE)
+        set(BASE64_INCLUDE_DIR ${BASE64_INCLUDE_DIR} PARENT_SCOPE)
+    endif()
 endif()
 
 # Add source to the executable
 add_executable(base64_example "main.c")
-add_dependencies(base64_example log sync base64)
-target_include_directories(base64_example PUBLIC include include/base64/)
-target_link_libraries(base64_example sync log base64)
+add_dependencies(base64_example base64)
+target_include_directories(base64_example PUBLIC ${BASE64_INCLUDE_DIR})
+target_link_libraries(base64_example base64)
 
-## Add source to the tester
-add_executable (base64_test "base64_test.c")
+# Add source to the tester
+add_executable(base64_test "base64_test.c")
 add_dependencies(base64_test sync log base64)
-target_include_directories(base64_test PUBLIC include include/base64 )
+target_include_directories(base64_test PUBLIC ${BASE64_INCLUDE_DIR} ${LOG_INCLUDE_DIR} ${SYNC_INCLUDE_DIR})
 target_link_libraries(base64_test sync log base64)
 
 # Add source to the library
 add_library(base64 SHARED "base64.c")
-add_dependencies(base64 log sync base64)
-target_include_directories(base64 PUBLIC include include/base64/)
-target_link_libraries(base64 sync log)
+target_include_directories(base64 PUBLIC ${BASE64_INCLUDE_DIR})

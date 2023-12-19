@@ -204,6 +204,11 @@ void run_tests ( void )
     // Stop
     encode_t1 = timer_high_precision();
 
+    // Report the time it took to run the serializer tests
+    log_info("encode tests took: ");
+    print_time_pretty ( (double)(encode_t1-encode_t0)/(double)timer_seconds_divisor() );
+    log_info(" to test\n");
+
     //////////////////////
     // Test the decoder //
     //////////////////////
@@ -218,11 +223,6 @@ void run_tests ( void )
     decode_t1 = timer_high_precision();
 
     // Report the time it took to run the parser tests
-    log_info("encode tests took: ");
-    print_time_pretty ( (double)(encode_t1-encode_t0)/(double)timer_seconds_divisor() );
-    log_info(" to test\n");
-
-    // Report the time it took to run the serializer tests
     log_info("decode tests took: ");
     print_time_pretty ( (double)(decode_t1-decode_t0)/(double)timer_seconds_divisor() );
     log_info(" to test\n");
