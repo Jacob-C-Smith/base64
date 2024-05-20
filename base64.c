@@ -9,7 +9,7 @@
 // Include 
 #include <base64/base64.h>
 
-// Constant data
+// Data
 static const char base_64_encoding_characters[64] = {
                                                         'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', // 0   - 7
                                                         'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', // 8   - 15
@@ -38,6 +38,26 @@ static const char base_64_decoding_characters[128] = {
                                                         0x29, 0x2A, 0x2B, 0x2C, 0x2D, 0x2E, 0x2F, 0x30, // 112 - 119
                                                         0x31, 0x32, 0x33, 0x00, 0x00, 0x00, 0x00, 0x00  // 120 - 127
                                                     };
+static bool initialized = false;
+
+void base64_init ( void )
+{
+
+    // State check
+    if ( initialized == true ) return;
+
+    // Initialize the log library
+    log_init();
+
+    // Initialize the sync library
+    sync_init();
+    
+    // Set the initialized flag
+    initialized = true;
+
+    // Done
+    return;
+}
 
 int base64_encode ( const void *const p_data, size_t len, char *const p_output )
 {
@@ -149,4 +169,23 @@ int base64_decode ( const char *const p_data, size_t len, void *const p_output )
                 return 0;
         }
     }
+}
+
+void base64_exit ( void )
+{
+    
+    // State check
+    if ( initialized == false ) return;
+
+    // Clean up the log library
+    log_exit();
+
+    // Clean up the sync library
+    sync_exit();
+
+    // Clear the initialized flag
+    initialized = false;
+
+    // Done
+    return;
 }

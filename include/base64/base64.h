@@ -11,6 +11,7 @@
 
 // Includes
 #include <stdio.h>
+#include <stdbool.h>
 
 // Platform dependent macros
 #ifdef _WIN64
@@ -19,6 +20,18 @@
 #define DLLEXPORT
 #endif
 
+
+// Initializer
+/** !
+ * This gets called at runtime before main. 
+ * 
+ * @param void
+ * 
+ * @return void
+ */
+DLLEXPORT void base64_init ( void ) __attribute__((constructor));
+
+// Encode
 /** !
  * Encode len bytes of data in base 64, and store in p_output
  * 
@@ -32,6 +45,7 @@
  */
 DLLEXPORT int base64_encode ( const void *const p_data, size_t len, char *const p_output );
 
+// Decode
 /** !
  * Decode len bytes of base 64 data, and store in p_output
  * 
@@ -44,3 +58,13 @@ DLLEXPORT int base64_encode ( const void *const p_data, size_t len, char *const 
  * @return 1 on success, 0 on error
  */
 DLLEXPORT int base64_decode ( const char *const p_data, size_t len, void *const p_output );
+
+// Cleanup
+/** !
+ * This gets called at runtime after main
+ * 
+ * @param void
+ * 
+ * @return void
+ */
+DLLEXPORT void base64_exit ( void ) __attribute__((destructor));
