@@ -73,9 +73,9 @@ endif()
 
 # Add source to the executable
 add_executable(base64_example "main.c")
-add_dependencies(base64_example base64)
-target_include_directories(base64_example PUBLIC ${BASE64_INCLUDE_DIR})
-target_link_libraries(base64_example base64)
+add_dependencies(base64_example sync log base64)
+target_include_directories(base64_example PUBLIC ${BASE64_INCLUDE_DIR} ${LOG_INCLUDE_DIR} ${SYNC_INCLUDE_DIR})
+target_link_libraries(base64_example sync log base64)
 
 # Add source to the tester
 add_executable(base64_test "base64_test.c")
@@ -85,4 +85,6 @@ target_link_libraries(base64_test sync log base64)
 
 # Add source to the library
 add_library(base64 SHARED "base64.c")
-target_include_directories(base64 PUBLIC ${BASE64_INCLUDE_DIR})
+add_dependencies(base64 sync log)
+target_include_directories(base64 PUBLIC ${BASE64_INCLUDE_DIR} ${LOG_INCLUDE_DIR} ${SYNC_INCLUDE_DIR})
+target_link_libraries(base64 sync log)

@@ -9,9 +9,15 @@
 // Include guard
 #pragma once
 
-// Includes
+// Standard library
 #include <stdio.h>
 #include <stdbool.h>
+
+// log module
+#include <log/log.h>
+
+// sync module
+#include <sync/sync.h>
 
 // Platform dependent macros
 #ifdef _WIN64

@@ -1,9 +1,17 @@
-// Include
+/** !
+ * Base64 example program 
+ * 
+ * @file main.c
+ * 
+ * @author Jacob Smith
+ */
+
+// Standard library
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-// base64 submodule
+// base64 module
 #include <base64/base64.h>
 
 // Entry point

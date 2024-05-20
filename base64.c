@@ -101,7 +101,7 @@ int base64_encode ( const void *const p_data, size_t len, char *const p_output )
         {
             no_data:
                 #ifndef NDEBUG
-                    printf("[base64] Null pointer provided for parameter \"p_data\" in call to function \"%s\"\n", __FUNCTION__);
+                    log_error("[base64] Null pointer provided for parameter \"p_data\" in call to function \"%s\"\n", __FUNCTION__);
                 #endif
 
                 // Error
@@ -109,7 +109,7 @@ int base64_encode ( const void *const p_data, size_t len, char *const p_output )
 
             no_output:
                 #ifndef NDEBUG
-                    printf("[base64] Null pointer provided for parameter \"p_output\" in call to function \"%s\"\n", __FUNCTION__);
+                    log_error("[base64] Null pointer provided for parameter \"p_output\" in call to function \"%s\"\n", __FUNCTION__);
                 #endif
 
                 // Error
@@ -154,7 +154,7 @@ int base64_decode ( const char *const p_data, size_t len, void *const p_output )
         {
             no_data:
                 #ifndef NDEBUG
-                    printf("[base64] Null pointer provided for parameter \"p_data\" in call to function \"%s\"\n", __FUNCTION__);
+                    log_error("[base64] Null pointer provided for parameter \"p_data\" in call to function \"%s\"\n", __FUNCTION__);
                 #endif
 
                 // Error
@@ -162,7 +162,7 @@ int base64_decode ( const char *const p_data, size_t len, void *const p_output )
 
             no_output:
                 #ifndef NDEBUG
-                    printf("[base64] Null pointer provided for parameter \"p_output\" in call to function \"%s\"\n", __FUNCTION__);
+                    log_error("[base64] Null pointer provided for parameter \"p_output\" in call to function \"%s\"\n", __FUNCTION__);
                 #endif
 
                 // Error
