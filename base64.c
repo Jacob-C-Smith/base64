@@ -75,9 +75,9 @@ int base64_encode ( const void *const p_data, size_t len, char *const p_output )
     {
 
         // Initialized data
-        unsigned long part = (((i   < len) ? ((unsigned char*)p_data)[i]   : 0) << 0x10) | 
-                             (((i+1 < len) ? ((unsigned char*)p_data)[i+1] : 0) << 0x08) |
-                             ( (i+2 < len) ? ((unsigned char*)p_data)[i+2] : 0);
+        unsigned long part = (unsigned long)(((i   < len) ? ((unsigned char*)p_data)[i]   : 0) << 0x10) | 
+                             (unsigned long)(((i+1 < len) ? ((unsigned char*)p_data)[i+1] : 0) << 0x08) |
+                             (unsigned long)( (i+2 < len) ? ((unsigned char*)p_data)[i+2] : 0);
 
         // Write the part to the output
         p_output[j]   = base_64_encoding_characters[(part >> 3 * 6) & 0x3F];
@@ -131,10 +131,10 @@ int base64_decode ( const char *const p_data, size_t len, void *const p_output )
     {
 
         // Initialized data
-        unsigned long long part = (base_64_decoding_characters[p_data[i+0]] << 3 * 6) + 
-                                  (base_64_decoding_characters[p_data[i+1]] << 2 * 6) +
-                                  (base_64_decoding_characters[p_data[i+2]] << 1 * 6) +
-                                  (base_64_decoding_characters[p_data[i+3]] << 0 * 6);
+        unsigned long long part = (unsigned long long)(base_64_decoding_characters[(size_t)p_data[i+0]] << 3 * 6) + 
+                                  (unsigned long long)(base_64_decoding_characters[(size_t)p_data[i+1]] << 2 * 6) +
+                                  (unsigned long long)(base_64_decoding_characters[(size_t)p_data[i+2]] << 1 * 6) +
+                                  (unsigned long long)(base_64_decoding_characters[(size_t)p_data[i+3]] << 0 * 6);
 
         // Write the part to the output
         ((unsigned char *const)p_output)[j+0] = (part >> 2 * 8) & 0xFF;
