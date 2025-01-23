@@ -25,6 +25,7 @@
 
 ## Try it
 [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/Jacob-C-Smith/base64?quickstart=1)
+ [![Open in Codeanywhere](https://codeanywhere.com/img/open-in-codeanywhere-btn.svg)](https://app.codeanywhere.com/#https://github.com/Jacob-C-Smith/base64)
 
 Wait for a few moments, then click the play button on the bottom of the window. This will run the example program.
 
