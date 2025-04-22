@@ -6,14 +6,14 @@
  * @author Jacob C Smith
  */
 
-// sync submodule
-#include <sync/sync.h>
-
-// log submodule
-#include <log/log.h>
-
 // base64
 #include <base64/base64.h>
+
+// log module
+#include <log/log.h>
+
+// sync module
+#include <sync/sync.h>
 
 // Enumeration definitions
 enum result_e {
