@@ -1,4 +1,4 @@
-﻿# Need CMake 3.16
+﻿# Need CMake 3.16.0
 cmake_minimum_required (VERSION 3.16.0)
 
 # The name of the repository
@@ -15,12 +15,19 @@ if(MSVC)
 else()
 
     # For clang
-    #set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -lrt -std=gnu99 -Wall -Wextra -Wpedantic -Weverything -Wno-declaration-after-statement -Ofast")
+    #set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -lrt -std=gnu99 -Wall -Wextra  -Weverything -Wno-declaration-after-statement -Ofast")
 
     # For GCC
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu99 -Wall -Wextra -Wpedantic -Wno-declaration-after-statement -O3")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu99 -Wall -Wextra -O3 -pthread -lpthread")
     add_compile_definitions(__USE_POSIX199309)
+    add_compile_options(-Wall -Wextra -Wpointer-arith -Wstrict-prototypes -Wformat-security -Wfloat-equal -Wshadow -Wconversion -pthread -lpthread -Wlogical-not-parentheses -Wnull-dereference)
 endif()
+
+# Build sync with timer
+add_compile_definitions(BUILD_SYNC_WITH_TIMER)
+
+# Build sync with mutex
+add_compile_definitions(BUILD_SYNC_WITH_MUTEX)
 
 # Comment out for Debug mode
 set(IS_DEBUG_BUILD CMAKE_BUILD_TYPE STREQUAL "Debug")
@@ -28,6 +35,19 @@ set(IS_DEBUG_BUILD CMAKE_BUILD_TYPE STREQUAL "Debug")
 # Set debug mode
 if (${IS_DEBUG_BUILD})
     add_compile_definitions(NDEBUG)
+endif()
+
+# Find the log module
+if ( NOT "${HAS_LOG}")
+    
+    # Add the log directory
+    add_subdirectory(${CMAKE_SOURCE_DIR}/extern/log ${CMAKE_SOURCE_DIR}/build/log)
+
+    # Let any parent project know that this project has log
+    if(NOT PROJECT_IS_TOP_LEVEL)
+        set(HAS_LOG true PARENT_SCOPE)
+        set(LOG_INCLUDE_DIR ${LOG_INCLUDE_DIR} PARENT_SCOPE)
+    endif()
 endif()
 
 # Find the sync module
@@ -40,18 +60,6 @@ if ( NOT "${HAS_SYNC}")
     if(NOT PROJECT_IS_TOP_LEVEL)
         set(HAS_SYNC true PARENT_SCOPE)
         set(SYNC_INCLUDE_DIR ${SYNC_INCLUDE_DIR} PARENT_SCOPE)
-    endif()
-endif()
-# Find the log module
-if ( NOT "${HAS_LOG}")
-    
-    # Add the log directory
-    add_subdirectory(${CMAKE_SOURCE_DIR}/extern/log ${CMAKE_SOURCE_DIR}/build/log)
-
-    # Let any parent project know that this project has log
-    if(NOT PROJECT_IS_TOP_LEVEL)
-        set(HAS_LOG true PARENT_SCOPE)
-        set(LOG_INCLUDE_DIR ${LOG_INCLUDE_DIR} PARENT_SCOPE)
     endif()
 endif()
 
